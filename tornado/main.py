@@ -11,6 +11,14 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 
+# Yelp
+#from yelp import ReviewSearchApi
+
+# Eventful
+import eventful
+
+eventful_api = eventful.API('5zPbkgmCjXhLpHT9')
+
 # Mongo
 import pymongo
 from bson import json_util
@@ -133,6 +141,10 @@ class DateHandler(BaseHandler):
         own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = me()")
         #gather date's locale
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
+
+        movies = eventful_api.call('/events/search', q='movies', l=own_locale)
+        for movie in movies['events']['event']:
+            print "%s at %s" % (movie['title'], movie['venue_name'])
 
         print own_locale
         print date_locale
