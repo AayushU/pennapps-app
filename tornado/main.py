@@ -37,6 +37,7 @@ class Application(tornado.web.Application):
             (r"/fbauth", FBHandler),
             (r"/autocomplete", AutocompleteHandler),
             (r"/DateHandler", DateHandler),
+            (r"/emailhandler", EmailHandler),
             ]
 
         settings = dict(
@@ -93,30 +94,22 @@ class FBHandler(BaseHandler):
 
 class AutocompleteHandler(BaseHandler):
     def get(self):
-        try:
-            term = self.get_argument('term', "")
-            print 'term is %s' % term
+        term = self.get_argument('term', "")
+        print 'term is %s' % term
 
-            fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
-                                    'user_location', 'friends_location']
-            fbconsole.authenticate()
-            friend_tuples = fbconsole.fql("SELECT name FROM user WHERE uid IN "
-                                            "(SELECT uid2 FROM friend WHERE uid1 = me())")
-            result = []
-            for item in friend_tuples:
-                if term in item['name']:
-                    result.append(item['name'])
+        friend_tuples = fbconsole.fql("SELECT name FROM user WHERE uid IN "
+                                        "(SELECT uid2 FROM friend WHERE uid1 = me())")
+        result = []
+        for item in friend_tuples:
+            if term in item['name']:
+                result.append(item['name'])
 
-            self.write(json.dumps(result))
-        except:
-            pass
+        self.write(json.dumps(result))
+
 
 class DateHandler(BaseHandler):
     def post(self):
         name = self.get_argument('friend_name')
-        fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
-                                'user_location', 'friends_location', 'offline_access', 'read_stream']
-        fbconsole.authenticate()
         friend_tuples = fbconsole.fql("SELECT name,uid FROM user WHERE uid IN "
                                         "(SELECT uid2 FROM friend WHERE uid1 = me())") 
 
@@ -126,7 +119,6 @@ class DateHandler(BaseHandler):
                 target_uid = item['uid']
                 break
 
-        print 
         #gather own likes
         own_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = me()")
         #gather the date's likes, represented by object_id
@@ -140,6 +132,15 @@ class DateHandler(BaseHandler):
                 page = fbconsole.fql("SELECT name, pic FROM page WHERE page_id = %s" % page_id)
                 self.write(json.dumps(page))
 
+        self.render("final.html");
+
+
+class EmailHandler(BaseHandler):
+    def post(self):
+
+        day = self.get_argument('day')
+        time = self.get_argument('time')
+
 
 class HomeHandler(BaseHandler):
     def get(self):
@@ -147,9 +148,6 @@ class HomeHandler(BaseHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
-                                'user_location', 'friends_location']
-        fbconsole.authenticate()
         friend_tuples = fbconsole.fql("SELECT name FROM user WHERE uid IN "
                                         "(SELECT uid2 FROM friend WHERE uid1 = me())")
         friends = []
