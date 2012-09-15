@@ -24,6 +24,10 @@ FSQOauthSecret = "L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU"
 #FB
 import fbconsole
 
+#Sendgrid
+import sendgrid
+
+my_date = ""
 
 class Application(tornado.web.Application):
 
@@ -109,13 +113,13 @@ class AutocompleteHandler(BaseHandler):
 
 class DateHandler(BaseHandler):
     def post(self):
-        name = self.get_argument('friend_name')
+        my_date = self.get_argument('friend_name')
         friend_tuples = fbconsole.fql("SELECT name,uid FROM user WHERE uid IN "
                                         "(SELECT uid2 FROM friend WHERE uid1 = me())") 
 
         target_uid = -1;
         for item in friend_tuples:
-            if item['name'] == name:
+            if item['name'] == my_date:
                 target_uid = item['uid']
                 break
 
@@ -124,12 +128,19 @@ class DateHandler(BaseHandler):
         #gather the date's likes, represented by object_id
         date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
                                     "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
-       # date_likes = fbconsole.fql("SELECT object_id FROM like WHERE user_id = %s" % target_uid)
+       
+        #gather own locale
+        own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = me()")
+        #gather date's locale
+        date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
+
+        print own_locale
+        print date_locale
 
         for item in own_likes:
             if item in date_likes:
                 page_id = item['page_id']
-                page = fbconsole.fql("SELECT name, pic FROM page WHERE page_id = %s" % page_id)
+                page = fbconsole.fql("SELECT name, pic, description,categories FROM page WHERE page_id = %s" % page_id)
                 self.write(json.dumps(page))
 
         self.render("final.html");
@@ -140,6 +151,15 @@ class EmailHandler(BaseHandler):
 
         day = self.get_argument('day')
         time = self.get_argument('time')
+        s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
+        message = sendgrid.Message("aayushu@gmail.com", "Wanna chill soon?", "Hey %s, do you want to go " 
+        "to dinner with me on %s at %s?" % (my_date, day,time), "")
+        message.add_to("aayushu@gmail.com", my_date) 
+
+        s.web.send(message)
+
+        self.write("Done sending message!")
+
 
 
 class HomeHandler(BaseHandler):
