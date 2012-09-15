@@ -5,6 +5,7 @@ import random
 import urllib2
 import re
 import textwrap
+import heapq
 
 # Tornado
 import tornado.httpserver
@@ -149,11 +150,27 @@ class DateHandler(BaseHandler):
         print own_locale
         print date_locale
 
+        venues = []
+        fsQuery = ""
         for item in own_likes:
             if item in date_likes:
                 page_id = item['page_id']
-                page = fbconsole.fql("SELECT name, pic, description,categories FROM page WHERE page_id = %s" % page_id)
-                self.write(json.dumps(page))
+                page = fbconsole.fql("SELECT name,categories FROM page WHERE page_id = %s" % page_id)
+                for it in page:
+                    fsQuery += it["name"]  + " "
+                    print ("Both people like " + it["name"])
+        client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
+        data = client.venues.search(params={'query': fsQuery, 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
+        for aplace in data["venues"]:
+				  heapq.heappush(venues, (aplace["stats"]["checkinsCount"], aplace["name"]))
+        largest = heapq.nlargest(10, venues)
+        for loc in largest:
+        	self.write("<p>" + loc[1] + "</p>")
+        #for item in venues:
+        #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
+        #top_venues = heapq.nlargest(5, venue_queue)
+#self.write(len(top_venues))
+    #self.write(json.dumps(page))
 
         self.render("final.html");
 
