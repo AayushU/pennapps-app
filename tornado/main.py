@@ -1,7 +1,8 @@
-    # Python
+# Python
 import os
 import json
 import random
+import urllib2
 
 # Tornado
 import tornado.httpserver
@@ -15,6 +16,9 @@ from bson import json_util
 #Foursquare
 import foursquare
 
+FSQOauthToken = "QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA"
+FSQOauthSecret = "L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU"
+
 class Application(tornado.web.Application):
 
     def __init__(self):
@@ -22,6 +26,8 @@ class Application(tornado.web.Application):
             (r"/", HomeHandler),
             (r"/fsmain", FSMainHandler),
             (r"/FoursquareHandler", FoursquareHandler),
+                    #(r"/POIHandler", POIHandler)
+            (r"/doSearchHandler", DoSearchHandler)
             ]
 
         settings = dict(
@@ -34,10 +40,25 @@ class Application(tornado.web.Application):
 class BaseHandler(tornado.web.RequestHandler):
     pass
 
+#class POIHandler(BaseHandler):
+#    def get(self):
+        
+class DoSearchHandler(BaseHandler):
+    def get(self):
+        client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
+        data = client.venues.search(params={'query':'pizza', 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
+        self.write("<html><head><title>Pizza in New Haven</title></head><body>")
+        for item in data["venues"]:
+            self.write("<p>" + item["name"] + "</p>")
+        self.write("</body></html>")
+    def post(self):
+        self.get()
+                   
+
 class FoursquareHandler(BaseHandler):
     def post(self):
-        client = foursquare.Foursquare(client_id='QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA', 
-                               client_secret='L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU', 
+        client = foursquare.Foursquare(client_id=FSQOauthToken, 
+                               client_secret=FSQOauthSecret,
                                redirect_uri='http://localhost:3000/fsmain')
 
         # Build the authorization url for your app
