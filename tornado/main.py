@@ -20,7 +20,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
-            (r"/main", MainHandler),
+            (r"/fsmain", FSMainHandler),
             (r"/FoursquareHandler", FoursquareHandler),
             ]
 
@@ -38,19 +38,19 @@ class FoursquareHandler(BaseHandler):
     def post(self):
         client = foursquare.Foursquare(client_id='QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA', 
                                client_secret='L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU', 
-                               redirect_uri='http://localhost:3000/main')
+                               redirect_uri='http://localhost:3000/fsmain')
 
         # Build the authorization url for your app
         auth_uri = client.oauth.auth_url()        
         self.write('Hello World, redirecting to %s' % auth_uri)
         self.redirect(auth_uri)
 
-class MainHandler(BaseHandler):
+class FSMainHandler(BaseHandler):
     def get(self):
 
         client = foursquare.Foursquare(client_id='QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA', 
                                client_secret='L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU', 
-                               redirect_uri='http://localhost:3000/main')
+                               redirect_uri='http://localhost:3000/fsmain')
         # Interrogate foursquare's servers to get the user's access_token
         access_token = client.oauth.get_token(self.get_argument("code"))
 
@@ -61,7 +61,6 @@ class MainHandler(BaseHandler):
         user = client.users()
         self.write("Authenticated alright!")
         self.write(user)
-
 
 class HomeHandler(BaseHandler):
     def get(self):
