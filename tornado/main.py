@@ -15,13 +15,18 @@ from bson import json_util
 #Foursquare
 import foursquare
 
+#FB
+import fbconsole
+
+#Opens a new browser tab instance and authenticates with the facebook API
+#It redirects to an url like http://www.facebook.com/connect/login_success.html#access_token=[access_token]&expires_in=0
+
 class Application(tornado.web.Application):
 
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
-            (r"/fsmain", FSMainHandler),
-            (r"/FoursquareHandler", FoursquareHandler),
+            (r"/fbauth", FBHandler),
             ]
 
         settings = dict(
@@ -34,33 +39,14 @@ class Application(tornado.web.Application):
 class BaseHandler(tornado.web.RequestHandler):
     pass
 
-class FoursquareHandler(BaseHandler):
+class FBHandler(BaseHandler):
     def post(self):
-        client = foursquare.Foursquare(client_id='QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA', 
-                               client_secret='L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU', 
-                               redirect_uri='http://localhost:3000/fsmain')
 
-        # Build the authorization url for your app
-        auth_uri = client.oauth.auth_url()        
-        self.write('Hello World, redirecting to %s' % auth_uri)
-        self.redirect(auth_uri)
+        fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
+                                'user_location', 'friends_location']
+        fbconsole.authenticate()
+        self.write('aww yeah')
 
-class FSMainHandler(BaseHandler):
-    def get(self):
-
-        client = foursquare.Foursquare(client_id='QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA', 
-                               client_secret='L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU', 
-                               redirect_uri='http://localhost:3000/fsmain')
-        # Interrogate foursquare's servers to get the user's access_token
-        access_token = client.oauth.get_token(self.get_argument("code"))
-
-        # Apply the returned access token to the client
-        client.set_access_token(access_token)
-
-        # Get the user's data
-        user = client.users()
-        self.write("Authenticated alright!")
-        self.write(user)
 
 class HomeHandler(BaseHandler):
     def get(self):
