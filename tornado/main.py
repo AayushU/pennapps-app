@@ -248,7 +248,7 @@ class DateHandler(BaseHandler):
             r1 = loc[1]['name']
        
         venues = []
-        self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
+        #self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
         for it in data["groups"]:
             for item in it["items"]:
