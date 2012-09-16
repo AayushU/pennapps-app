@@ -163,8 +163,6 @@ class DateHandler(BaseHandler):
         """
         friend_likes = fbconsole.get('/%s/likes' % target_uid)
 
-        print friend_likes
-        
         my_like_count = {}
         friend_like_count = {}
 
@@ -189,10 +187,6 @@ class DateHandler(BaseHandler):
             if item == "Community" or item == "Interest": # too vague
                 continue
             else:
-                if item == 'Musician/band':
-                    item = 'band'
-                elif item == 'Professional sports team':
-                    item = "Sports"
                 my_top_category = item
                 break
 
@@ -200,10 +194,6 @@ class DateHandler(BaseHandler):
             if item == "Community" or item == "Interest": # too vague
                 continue
             else:
-                if item == 'Musician/band':
-                    item = 'band'
-                elif item == 'Professional sports team':
-                    item = "Sports"
                 friend_top_category = item
                 break
             
@@ -257,58 +247,33 @@ class DateHandler(BaseHandler):
         data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
         for it in data["groups"]:
             for item in it["items"]:
-                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
         largest = heapq.nlargest(1, venues)
         for loc in largest:
-<<<<<<< HEAD
             #self.write("<p>" + loc[1] + "</p>")
 			rec1 = rec2 = loc[1]
-=======
-            self.write("<p>" + loc[1]['name'] + "</p>")
-            first_place = loc[1]
-            print first_place
->>>>>>> d3671ea62074192e801bee84ec83992437f08e89
        
         venues = []
         self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
         for it in data["groups"]:
             for item in it["items"]:
-                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
-        largest = heapq.nlargest(10, venues)
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
+        largest = heapq.nlargest(1, venues)
         for loc in largest:
-<<<<<<< HEAD
             self.write("<p>" + loc[1] + "</p>")
 			#rec2 = loc[1]
-=======
-            self.write("<p>" + loc[1]['name'] + "</p>")
-            second_place = loc[1]
->>>>>>> d3671ea62074192e801bee84ec83992437f08e89
 				
         venues = []
         #self.write("<p> Here are the top restaurants in my area</p>")
         data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
         for it in data["groups"]:
             for item in it["items"]:
-                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
         largest = heapq.nlargest(1, venues)
         for loc in largest:
-<<<<<<< HEAD
             #self.write("<p>" + loc[1] + "</p>")
 			rec3 = loc[1]
-=======
-            self.write("<p>" + loc[1]['name'] + "</p>")
-            third_place = loc[1]
-            print third_place
-
-
-        first_stats = {} 
-        first_stats['address'] = first_place['location']['address']
-        first_stats['phone'] = first_place['contact']['formattedPhone']
-        first_stats['website'] = first_place['url'] 
-        first_stats['lat'] = first_place['location']['lat']
-        first_stats['lng'] = first_place['location']['lng']
->>>>>>> d3671ea62074192e801bee84ec83992437f08e89
 				
         #for item in venues:
 				
