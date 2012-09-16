@@ -2,13 +2,18 @@
 import os
 import json
 import random
+import urllib
 import urllib2
 import re
 import textwrap
 import heapq
+import xmltodict
+from collections import OrderedDict
 
 # Tornado
 import tornado.httpserver
+import tornado.httpclient
+import tornado.options
 import tornado.ioloop
 import tornado.web
 
@@ -37,6 +42,9 @@ import fbconsole
 import sendgrid
 
 my_date = ""
+movies = dict()
+own_likes = ""
+friend_tuples = {}
 
 class Application(tornado.web.Application):
 
@@ -122,9 +130,11 @@ class AutocompleteHandler(BaseHandler):
 
 class DateHandler(BaseHandler):
     def post(self):
+        global movies
+        global own_likes
+        global friend_tuples
+
         my_date = self.get_argument('friend_name')
-        friend_tuples = fbconsole.fql("SELECT name,uid FROM user WHERE uid IN "
-                                        "(SELECT uid2 FROM friend WHERE uid1 = me())") 
 
         target_uid = -1;
         for item in friend_tuples:
@@ -133,31 +143,27 @@ class DateHandler(BaseHandler):
                 break
         print ("User id is %s" % target_uid)
 
-        #gather own likes
-        own_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = me()")
         #gather the date's likes, represented by object_id
         #date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
         #                            "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
+
+        query_dict = {}
         date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
+        date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
 
         #more_my_likes = fbconsole.fql("SELECT url FROM url_like WHERE user_id = %s" % target_uid)
         for item in date_likes:
             print json.dumps(item)
-				
        
-        #gather own locale
-        own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = me()")
-        #gather date's locale
-        date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
-
-        movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
-        for movie in movies['events']['event']:
+        #movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
+        while (len(movies) == 0):
+            pass
+        for movie in movies['search']['events']['event']:
             print "%s at %s" % (movie['title'], movie['venue_name'])
         
-
-        print own_locale
         print date_locale
 
+        query_dict = {}
         venues = []
         fsQuery = ""
         for item in own_likes:
@@ -192,26 +198,43 @@ class EmailHandler(BaseHandler):
         message = sendgrid.Message("aayushu@gmail.com", "Wanna chill soon?", "Hey %s, do you want to go " 
         "to dinner with me on %s at %s?" % (my_date, day,time), "")
         message.add_to("aayushu@gmail.com", my_date) 
-
         s.web.send(message)
-
         self.write("Done sending message!")
-
 
 
 class HomeHandler(BaseHandler):
     def get(self):
         self.render("home.html");
 
+
 class MainHandler(BaseHandler):
     def get(self):
-        friend_tuples = fbconsole.fql("SELECT name FROM user WHERE uid IN "
+        global own_likes
+        global friend_tuples
+        user = fbconsole.get('/me')
+        uid = user['id']
+        client = tornado.httpclient.HTTPClient()
+        friend_tuples = fbconsole.fql("SELECT name,uid FROM user WHERE uid IN "
                                         "(SELECT uid2 FROM friend WHERE uid1 = me())")
-        friends = []
-        for item in friend_tuples:
-            friends.append(item['name'])
+        own_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % uid)
+        own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % uid)
+
+        #gather own locale
+        city = own_locale[0]['current_location']['city']
+        city = city.replace(' ',',')
+        client = tornado.httpclient.AsyncHTTPClient()
+        
+        client.fetch("http://api.eventful.com/rest/events/search?" + \
+                    urllib.urlencode({"app_key": "5zPbkgmCjXhLpHT9", "keywords":"movies", "location":city}),
+                    callback=self.on_movie_response)
 
         self.render("main.html");
+
+    def on_movie_response(self, response):
+        print "caught response"
+        global movies
+        movies = xmltodict.parse(response.body)
+
 
 def main(port='3000', address='127.0.0.1'):
     http_server = tornado.httpserver.HTTPServer(Application())
