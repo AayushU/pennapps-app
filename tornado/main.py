@@ -196,8 +196,8 @@ class DateHandler(BaseHandler):
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
 
         #more_my_likes = fbconsole.fql("SELECT url FROM url_like WHERE user_id = %s" % target_uid)
-        for item in date_likes:
-            print json.dumps(item)
+        #for item in date_likes:
+        #    print json.dumps(item)
        
         #movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
         while (len(movies) == 0):
@@ -218,12 +218,22 @@ class DateHandler(BaseHandler):
                     fsQuery += it["name"]  + " "
                     print ("Both people like " + it["name"])
         client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
-        data = client.venues.search(params={'query': fsQuery, 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
-        for aplace in data["venues"]:
-				  heapq.heappush(venues, (aplace["stats"]["checkinsCount"], aplace["name"]))
+				#-------Searching 4Sq
+        #data = client.venues.search(params={'query': fsQuery, 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
+        #for aplace in data["venues"]:
+				#  heapq.heappush(venues, (aplace["stats"]["checkinsCount"], aplace["name"]))
+        #largest = heapq.nlargest(10, venues)
+        #for loc in largest:
+        #	self.write("<p>" + loc[1] + "</p>")
+				#-------Exploring 4Sq
+        data = client.venues.explore(params={'near' : 'New Haven, CT' })
+        for it in data["groups"]:
+            for item in it["items"]:
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
         largest = heapq.nlargest(10, venues)
         for loc in largest:
-        	self.write("<p>" + loc[1] + "</p>")
+            self.write("<p>" + loc[1] + "</p>")
+				
         #for item in venues:
         #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
         #top_venues = heapq.nlargest(5, venue_queue)
