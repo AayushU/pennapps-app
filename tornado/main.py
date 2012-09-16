@@ -248,7 +248,7 @@ class DateHandler(BaseHandler):
             r1 = loc[1]['name']
        
         venues = []
-        self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
+    #    self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
         for it in data["groups"]:
             for item in it["items"]:
@@ -270,32 +270,40 @@ class DateHandler(BaseHandler):
             third_place = loc[1]
             r3 = loc[1]['name']
 
-        """
+
         first_stats = {} 
+        first_stats['name'] = first_place['name']
         first_stats['address'] = first_place['location']['address']
         first_stats['phone'] = first_place['contact']['formattedPhone']
         if 'url' in first_place:
             first_stats['website'] = first_place['url'] 
+        else:
+            first_stats['website'] = 'N/A'
         first_stats['lat'] = first_place['location']['lat']
         first_stats['lng'] = first_place['location']['lng']
 
         second_stats = {} 
+        second_stats['name'] = second_place['name']
         second_stats['address'] = second_place['location']['address']
         second_stats['phone'] = second_place['contact']['formattedPhone']
         if 'url' in second_place:
             second_stats['website'] = second_place['url'] 
+        else:
+            second_stats['website'] = 'N/A'
         second_stats['lat'] = second_place['location']['lat']
         second_stats['lng'] = second_place['location']['lng']
 
         third_stats = {} 
+        third_stats['name'] = third_place['name']
         third_stats['address'] = third_place['location']['address']
         third_stats['phone'] = third_place['contact']['formattedPhone']
         if 'url' in third_place:
             third_stats['website'] = third_place['url'] 
+        else:
+            third_stats['website'] = 'N/A'
         third_stats['lat'] = third_place['location']['lat']
         third_stats['lng'] = third_place['location']['lng']
             #self.write("<p>" + loc[1] + "</p>")
-        """
 				
         #for item in venues:
         #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
@@ -303,7 +311,19 @@ class DateHandler(BaseHandler):
 #self.write(len(top_venues))
     #self.write(json.dumps(page))
 
-        self.render("options.html", rec1 = r1, rec2 = r2, rec3 = r3);
+        self.render("options.html",
+                name1 = first_stats['name'],
+                addr1 = first_stats['address'],
+                phone1 = first_stats['phone'],
+                web1 = first_stats['website'],
+                name2 = second_stats['name'],
+                addr2 = second_stats['address'],
+                phone2 = second_stats['phone'],
+                web2 = second_stats['website'],
+                name3 = third_stats['name'],
+                addr3 = third_stats['address'],
+                phone3 = third_stats['phone'],
+                web3 = third_stats['website']);
 
 
 class EmailHandler(BaseHandler):
