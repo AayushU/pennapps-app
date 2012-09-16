@@ -169,12 +169,13 @@ input:hover {
 .option {
 	float: left;
 	width: 250px;
-	height: 400px;
-	overflow: auto;
+	/*height: 400px;
+	overflow: auto;*/
 	margin: 15px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-top: 10px;
+	padding-bottom: 10px;
 	background-color: #EBE2D5;
 	opacity: .5;
 	padding-left: 10px;
