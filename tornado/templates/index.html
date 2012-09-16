@@ -2,6 +2,10 @@
 <head>
 	<title>PennApps</title>
 	<link href="../static/css/style.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -9,14 +13,18 @@
 			
 	<h1><font color="d1473e">&#x2764;</font></h1>
 	<h1>IT'S A DATE.</h1>
-	<div class = "text-wrapper"><p>Some text about our app here. Texty text text. Blah blah blah. Explanation of why we're awesome.</p></div>
+	<div class = "text-wrapper"><h2>Some text about our app here. Texty text text. Blah blah blah. Explanation of why we're awesome.</h2></div>
 	
-	<!-- <div class = "button">Connect with Facebook</div> -->
+	<!-- <div class = "button">Connect with Facebook</div> 
+	-->
 	<form method="post" action="/fbauth">
-        <input type="submit" class="submit-button" value="Log In With Facebook">
+        <input type="submit" class="submit-button" id="fb-login-button" value="Log In With Facebook">
     </form>
 	
 	</div>
+	
+	
+
 	
 </body>
 

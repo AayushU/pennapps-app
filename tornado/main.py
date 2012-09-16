@@ -134,6 +134,10 @@ class DateHandler(BaseHandler):
         global friend_tuples
         global my_loc
 
+		#attempt at splash screen
+		#self.render("intertitle.html");
+		
+
         my_date = self.get_argument('friend_name')
 
         target_uid = -1;
@@ -159,8 +163,6 @@ class DateHandler(BaseHandler):
         """
         friend_likes = fbconsole.get('/%s/likes' % target_uid)
 
-        print friend_likes
-        
         my_like_count = {}
         friend_like_count = {}
 
@@ -185,10 +187,16 @@ class DateHandler(BaseHandler):
             if item == "Community" or item == "Interest": # too vague
                 continue
             else:
-                if item == 'Musician/band':
-                    item = 'band'
-                elif item == 'Professional sports team':
-                    item = "Sports"
+                if item == "Tv show":
+                    item = "television"
+                elif item == "Professional sports team":
+                    item = "Sport"
+                elif item == "Restaurant/cafe":
+                    item = "Restaurant"
+                elif item == "Food/beverages":
+                    item = "food"
+                elif item == "Musician/band":
+                    item = "band"
                 my_top_category = item
                 break
 
@@ -196,15 +204,21 @@ class DateHandler(BaseHandler):
             if item == "Community" or item == "Interest": # too vague
                 continue
             else:
-                if item == 'Musician/band':
-                    item = 'band'
-                elif item == 'Professional sports team':
-                    item = "Sports"
+                if item == "Tv show":
+                    item = "television"
+                elif item == "Professional sports team":
+                    item = "Sport"
+                elif item == "Restaurant/cafe":
+                    item = "Restaurant"
+                elif item == "Food/beverages":
+                    item = "food"
+                elif item == "Musician/band":
+                    item = "band"
                 friend_top_category = item
                 break
             
-        #print my_like_count
-        #print friend_like_count
+        print my_like_count
+        print friend_like_count
 
         #print "My top category is %s" % my_top_category
         #print "My date's top category is %s" % friend_top_category
@@ -220,16 +234,18 @@ class DateHandler(BaseHandler):
         #	self.write("<p>" + loc[1] + "</p>")
 		        #-------Exploring 4Sq
         
-        self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
+
+
+        #self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(1, venues)
+        print largest
         for loc in largest:
-            self.write("<p>" + loc[1]['name'] + "</p>")
             first_place = loc[1]
-            print first_place
+            r1 = loc[1]['name']
        
         venues = []
         self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
@@ -237,24 +253,24 @@ class DateHandler(BaseHandler):
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
-        largest = heapq.nlargest(10, venues)
+        largest = heapq.nlargest(1, venues)
+        print largest
         for loc in largest:
-            self.write("<p>" + loc[1]['name'] + "</p>")
             second_place = loc[1]
+            r2 = loc[1]['name']
 				
         venues = []
-        self.write("<p> Here are the top restaurants in my area</p>")
         data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(1, venues)
+        print largest
         for loc in largest:
-            self.write("<p>" + loc[1]['name'] + "</p>")
             third_place = loc[1]
-            print third_place
+            r3 = loc[1]['name']
 
-
+        """
         first_stats = {} 
         first_stats['address'] = first_place['location']['address']
         first_stats['phone'] = first_place['contact']['formattedPhone']
@@ -278,7 +294,8 @@ class DateHandler(BaseHandler):
             third_stats['website'] = third_place['url'] 
         third_stats['lat'] = third_place['location']['lat']
         third_stats['lng'] = third_place['location']['lng']
-				
+            #self.write("<p>" + loc[1] + "</p>")
+        """
 				
         #for item in venues:
         #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
@@ -286,7 +303,7 @@ class DateHandler(BaseHandler):
 #self.write(len(top_venues))
     #self.write(json.dumps(page))
 
-        self.render("final.html");
+        self.render("options.html", rec1 = r1, rec2 = r2, rec3 = r3);
 
 
 class EmailHandler(BaseHandler):

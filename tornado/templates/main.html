@@ -15,11 +15,23 @@
 		<h1 class = "inline">{{ name }} <font color="d1473e">&#x2764; </font></h1>
 	
 		<form method="post" id="search-form" action="/DateHandler">
-			<input type = "text" id="friend_search" name="friend_name" value="TYPE YOUR DATE'S NAME">
+			<input type = "text" id="friend_search" name="friend_name">
 			<input type="submit" class="submit-button" value="Take 'Em Out" text-align="center">
  		</form>
 	
         <script>
+		<!-- http://www.davidjrush.com/blog/2011/10/jquery-creating-a-textbox-text-watermark/ -->
+		$(document).ready(function() {
+		 var watermark = 'TYPE YOUR DATE\'S NAME';
+		 $('#friend_search').blur(function(){
+		  if ($(this).val().length == 0)
+		    $(this).val(watermark).addClass('watermark');
+		 }).focus(function(){
+		  if ($(this).val() == watermark)
+		    $(this).val('').removeClass('watermark');
+		 }).val(watermark).addClass('watermark');
+		});
+
             $(document).ready(function() {
                 $('#friend_search').autocomplete({
                     source: "/autocomplete",
