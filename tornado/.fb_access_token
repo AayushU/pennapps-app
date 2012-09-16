@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"access_token": "AAACjeiZB6FgIBAIdgnKPkLzBWCMh5pmq6b3kzKemEIF8Pp8mt4qom4ZA1qyIzErDzkgQ1X4OSBnDHHxvUl8InsZBkIN3AuaPZBY5gGpQbDcBwYZB1nKXI", "scope": ["user_interests", "user_likes", "friends_interests", "friends_likes", "user_location", "friends_location", "user_activities", "friends_activities"], "expires_at": 1347800400}
+=======
+{"access_token": "AAACjeiZB6FgIBAPsnvPqJlYZBtk4nihNbfWlDtECJTKCXNNzCzExtxBDFsr6kWGtZC1i0RZBZCL19AYm1M0R1wZC3PrtiU2pbwAKdOrR1n7SVFVPpZCb1xH", "scope": ["user_interests", "user_likes", "friends_interests", "friends_likes", "user_location", "friends_location", "user_activities", "friends_activities"], "expires_at": 1347804046}
+>>>>>>> d3671ea62074192e801bee84ec83992437f08e89
