@@ -209,33 +209,6 @@ class DateHandler(BaseHandler):
         #print "My top category is %s" % my_top_category
         #print "My date's top category is %s" % friend_top_category
 
-        """
-        date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
-        date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
-
-        #more_my_likes = fbconsole.fql("SELECT url FROM url_like WHERE user_id = %s" % target_uid)
-        #for item in date_likes:
-        #    print json.dumps(item)
-       
-        #movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
-        while (len(movies) == 0):
-            pass
-        for movie in movies['search']['events']['event']:
-            print "%s at %s" % (movie['title'], movie['venue_name'])
-        
-        print date_locale
-
-        query_dict = {}
-        venues = []
-        fsQuery = ""
-        for item in own_likes:
-            if item in date_likes:
-                page_id = item['page_id']
-                page = fbconsole.fql("SELECT name,categories FROM page WHERE page_id = %s" % page_id)
-                for it in page:
-                    fsQuery += it["name"]  + " "
-                    print ("Both people like " + it["name"])
-        """
         venues = []
         client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
 				#-------Searching 4Sq
@@ -285,11 +258,27 @@ class DateHandler(BaseHandler):
         first_stats = {} 
         first_stats['address'] = first_place['location']['address']
         first_stats['phone'] = first_place['contact']['formattedPhone']
-        first_stats['website'] = first_place['url'] 
+        if 'url' in first_place:
+            first_stats['website'] = first_place['url'] 
         first_stats['lat'] = first_place['location']['lat']
         first_stats['lng'] = first_place['location']['lng']
+
+        second_stats = {} 
+        second_stats['address'] = second_place['location']['address']
+        second_stats['phone'] = second_place['contact']['formattedPhone']
+        if 'url' in second_place:
+            second_stats['website'] = second_place['url'] 
+        second_stats['lat'] = second_place['location']['lat']
+        second_stats['lng'] = second_place['location']['lng']
+
+        third_stats = {} 
+        third_stats['address'] = third_place['location']['address']
+        third_stats['phone'] = third_place['contact']['formattedPhone']
+        if 'url' in third_place:
+            third_stats['website'] = third_place['url'] 
+        third_stats['lat'] = third_place['location']['lat']
+        third_stats['lng'] = third_place['location']['lng']
 				
-        #for item in venues:
 				
         #for item in venues:
         #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
