@@ -44,6 +44,7 @@ my_date = ""
 movies = dict()
 own_likes = ""
 friend_tuples = {}
+my_loc = "" 
 
 class Application(tornado.web.Application):
 
@@ -132,6 +133,7 @@ class DateHandler(BaseHandler):
         global movies
         global own_likes
         global friend_tuples
+        global my_loc
 
         my_date = self.get_argument('friend_name')
 
@@ -143,19 +145,19 @@ class DateHandler(BaseHandler):
         print ("User id is %s" % target_uid)
 
         #gather the date's likes, represented by object_id
-        #date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
-        #                            "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
 
-        my_movies = fbconsole.get('/me/movies')
+        """my_movies = fbconsole.get('/me/movies')
         my_music = fbconsole.get('/me/music')
         my_tv = fbconsole.get('/me/television')
         my_activities = fbconsole.get('/me/activities')
+        """
         my_likes = fbconsole.get('/me/likes')
 
-        friend_movies = fbconsole.get('/%s/movies' % target_uid)
+        """friend_movies = fbconsole.get('/%s/movies' % target_uid)
         friend_music = fbconsole.get('/%s/music' % target_uid)
         friend_tv = fbconsole.get('/%s/television' % target_uid)
         friend_activities = fbconsole.get('/%s/activities' % target_uid)
+        """
         friend_likes = fbconsole.get('/%s/likes' % target_uid)
 
         my_like_count = {}
@@ -166,32 +168,39 @@ class DateHandler(BaseHandler):
             if cat in my_like_count:
                 my_like_count[cat] += 1
             else:
-                my_like_count[cat] = 0
+                my_like_count[cat] = 1 
 
         for item in friend_likes['data']:
             cat = str(item['category'])
             if cat in friend_like_count:
                 friend_like_count[cat] += 1
             else:
-                friend_like_count[cat] = 0
+                friend_like_count[cat] = 1
 
         my_top_category = ""
         friend_top_category = ""
 
         for item in sorted(my_like_count, key = my_like_count.get, reverse=True):
-            if item == "Community" || item == "Interest": # too vague
+            if item == "Community" or item == "Interest": # too vague
                 continue
             else:
                 my_top_category = item
                 break
 
         for item in sorted(friend_like_count, key = friend_like_count.get, reverse=True):
-            if item == "Community" || item == "Interest": # too vague
+            if item == "Community" or item == "Interest": # too vague
                 continue
             else:
                 friend_top_category = item
                 break
+            
+        #print my_like_count
+        #print friend_like_count
 
+        #print "My top category is %s" % my_top_category
+        #print "My date's top category is %s" % friend_top_category
+
+        """
         date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
 
@@ -217,6 +226,8 @@ class DateHandler(BaseHandler):
                 for it in page:
                     fsQuery += it["name"]  + " "
                     print ("Both people like " + it["name"])
+        """
+        venues = []
         client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
 				#-------Searching 4Sq
         #data = client.venues.search(params={'query': fsQuery, 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
@@ -225,14 +236,38 @@ class DateHandler(BaseHandler):
         #largest = heapq.nlargest(10, venues)
         #for loc in largest:
         #	self.write("<p>" + loc[1] + "</p>")
-				#-------Exploring 4Sq
-        data = client.venues.explore(params={'near' : 'New Haven, CT' })
+		        #-------Exploring 4Sq
+        
+        self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
+        data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
-        largest = heapq.nlargest(10, venues)
+        largest = heapq.nlargest(1, venues)
         for loc in largest:
             self.write("<p>" + loc[1] + "</p>")
+       
+        venues = []
+        self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
+        data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
+        for it in data["groups"]:
+            for item in it["items"]:
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
+        largest = heapq.nlargest(1, venues)
+        for loc in largest:
+            self.write("<p>" + loc[1] + "</p>")
+				
+        venues = []
+        self.write("<p> Here are the top restaurants in my area</p>")
+        data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
+        for it in data["groups"]:
+            for item in it["items"]:
+                heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
+        largest = heapq.nlargest(1, venues)
+        for loc in largest:
+            self.write("<p>" + loc[1] + "</p>")
+				
+        #for item in venues:
 				
         #for item in venues:
         #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
@@ -265,6 +300,7 @@ class MainHandler(BaseHandler):
     def get(self):
         global own_likes
         global friend_tuples
+        global my_loc
         user = fbconsole.get('/me')
         uid = user['id']
         client = tornado.httpclient.HTTPClient()
@@ -272,6 +308,7 @@ class MainHandler(BaseHandler):
                                         "(SELECT uid2 FROM friend WHERE uid1 = me())")
         own_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % uid)
         own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % uid)
+        my_loc = own_locale[0]['current_location']['name']
 
         #gather own locale
         city = own_locale[0]['current_location']['city']
