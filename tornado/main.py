@@ -8,6 +8,7 @@ import re
 import textwrap
 import heapq
 import xmltodict
+from twilio.rest import TwilioRestClient
 
 # Tornado
 import tornado.httpserver
@@ -34,6 +35,9 @@ import foursquare
 FSQOauthToken = "QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA"
 FSQOauthSecret = "L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU"
 
+twaccount = "AC032798eca07124939abd8352c516f86d"
+twtoken = "bbc20641c4fdb7e5a0ccc86b4fdefcfe"
+
 #FB
 import fbconsole
 
@@ -59,6 +63,7 @@ class Application(tornado.web.Application):
             (r"/autocomplete", AutocompleteHandler),
             (r"/DateHandler", DateHandler),
             (r"/emailhandler", EmailHandler),
+						(r"/sendSMS", SendSMSHandler)
             ]
 
         settings = dict(
@@ -71,6 +76,11 @@ class Application(tornado.web.Application):
 class BaseHandler(tornado.web.RequestHandler):
     pass
 
+class SendSMSHandler(BaseHandler):
+	def get(self):
+		client = TwilioRestClient(twaccount, twtoken)
+		message = client.sms.messages.create(to="+14082198916",from_="+1954607-3879",body="Twilio works!")
+		self.write("Sent a message")
         
 class DoSearchHandler(BaseHandler):
     def get(self):
