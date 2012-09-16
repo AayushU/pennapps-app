@@ -3,6 +3,10 @@
 	<title>PennApps</title>
 	
 	<link href="../static/css/style.css" rel="stylesheet" type="text/css">
+	<link href="../static/css/style.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -13,16 +17,91 @@
 	
 		<form method="post" action="" id="search-form">
 			<input type = "text" id="hour" class="time" value="HH"><h1 class="accent">:</h1>
-			<input type = "text" id="month" class="time" value="mm"><h1 class="inline"> on </h1>
+			<input type = "text" id="min" class="time" value="mm"><h1 class="inline"> on </h1>
 			
 			<input type = "text" id="month" class="time" value="MM"><h1 class="accent">/</h1>
 			<input type = "text" id="day" class="time" value="DD"><h1 class="accent">/</h1>
 			<input type = "text" id="year" class="time" value="YY"><h1 class="inline">.</h1>
+			<br><br><br>
+			<h1 class="inline">Send an invite to </h1>
+			<input type = "text" id="email" value="email@domain.com">
 		</form>
 	
 	</div>
 
 	<div class = "button">It's a Date!</div>
+	
+	
+	<script>
+	$(document).ready(function() {
+	 var watermark = 'HH';
+	 $('#hour').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+	
+	$(document).ready(function() {
+	 var watermark = 'mm';
+	 $('#min').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+
+       $(document).ready(function() {
+	 var watermark = 'MM';
+	 $('#month').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+	
+	$(document).ready(function() {
+	 var watermark = 'DD';
+	 $('#day').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+	
+	$(document).ready(function() {
+	 var watermark = 'YY';
+	 $('#year').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+	
+	$(document).ready(function() {
+	 var watermark = 'email@domain.com';
+	 $('#email').blur(function(){
+	  if ($(this).val().length == 0)
+	    $(this).val(watermark).addClass('watermark');
+	 }).focus(function(){
+	  if ($(this).val() == watermark)
+	    $(this).val('').removeClass('watermark');
+	 }).val(watermark).addClass('watermark');
+	});
+	
+    </script>
+	
+	</script>
 	
 	
 </body>
