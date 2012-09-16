@@ -150,14 +150,47 @@ class DateHandler(BaseHandler):
         my_music = fbconsole.get('/me/music')
         my_tv = fbconsole.get('/me/television')
         my_activities = fbconsole.get('/me/activities')
+        my_likes = fbconsole.get('/me/likes')
 
         friend_movies = fbconsole.get('/%s/movies' % target_uid)
         friend_music = fbconsole.get('/%s/music' % target_uid)
         friend_tv = fbconsole.get('/%s/television' % target_uid)
         friend_activities = fbconsole.get('/%s/activities' % target_uid)
+        friend_likes = fbconsole.get('/%s/likes' % target_uid)
 
-        print my_activities
-        print friend_activities
+        my_like_count = {}
+        friend_like_count = {}
+
+        for item in my_likes['data']:
+            cat = str(item['category'])
+            if cat in my_like_count:
+                my_like_count[cat] += 1
+            else:
+                my_like_count[cat] = 0
+
+        for item in friend_likes['data']:
+            cat = str(item['category'])
+            if cat in friend_like_count:
+                friend_like_count[cat] += 1
+            else:
+                friend_like_count[cat] = 0
+
+        my_top_category = ""
+        friend_top_category = ""
+
+        for item in sorted(my_like_count, key = my_like_count.get, reverse=True):
+            if item == "Community" || item == "Interest": # too vague
+                continue
+            else:
+                my_top_category = item
+                break
+
+        for item in sorted(friend_like_count, key = friend_like_count.get, reverse=True):
+            if item == "Community" || item == "Interest": # too vague
+                continue
+            else:
+                friend_top_category = item
+                break
 
         date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
