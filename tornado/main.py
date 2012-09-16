@@ -303,26 +303,28 @@ class DateHandler(BaseHandler):
         third_stats['lat'] = third_place['location']['lat']
         third_stats['lng'] = third_place['location']['lng']
             #self.write("<p>" + loc[1] + "</p>")
-				
-        #for item in venues:
-        #    heapq.heappush(venue_queue, (item["stats"]["checkinsCount"], item["name"]))
-        #top_venues = heapq.nlargest(5, venue_queue)
-#self.write(len(top_venues))
-    #self.write(json.dumps(page))
+
+
+        first_text = client.venues(first_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
+        second_text = client.venues(second_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
+        third_text = client.venues(third_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
 
         self.render("options.html",
                 name1 = first_stats['name'],
                 addr1 = first_stats['address'],
                 phone1 = first_stats['phone'],
                 web1 = first_stats['website'],
+                tip1 = first_text,
                 name2 = second_stats['name'],
                 addr2 = second_stats['address'],
                 phone2 = second_stats['phone'],
                 web2 = second_stats['website'],
+                tip2 = second_text,
                 name3 = third_stats['name'],
                 addr3 = third_stats['address'],
                 phone3 = third_stats['phone'],
-                web3 = third_stats['website']);
+                web3 = third_stats['website'],
+                tip3 = third_text);
 
 
 class EmailHandler(BaseHandler):
