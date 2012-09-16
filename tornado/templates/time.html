@@ -11,11 +11,11 @@
 
 <body>
 	
-	<div class = "search-wrapper">
+	<div class = "search-wrapper" id="time-wrap">
 	
 		<h1 class = "inline">Let's meet at </h1>
 	
-		<form method="post" action="" id="search-form">
+		<form method="post" action="/time" id="search-form">
 			<input type = "text" id="hour" class="time" value="HH"><h1 class="accent">:</h1>
 			<input type = "text" id="min" class="time" value="mm"><h1 class="inline"> on </h1>
 			
@@ -25,12 +25,29 @@
 			<br><br><br>
 			<h1 class="inline">Send an invite to </h1>
 			<input type = "text" id="email" value="email@domain.com">
+			
+			<input type="submit" class="submit-button" id="time-submit" value="It's a Date!" text-align="center">
+			
 		</form>
+	
+		<!-- <div class = "button">It's a Date!</div> -->
+	
 	
 	</div>
 
-	<div class = "button">It's a Date!</div>
 	
+	
+	<div id="intertitle2" style="display: none">
+		<h3 style="font-family: MuseoSlab; margin-top: 275px; font-size: 36px">Congrats!</h3>
+	</div>
+        <script>
+
+		$(document).ready(function() {
+		   $('#time-submit').click(function(){
+		     $('#time-wrap').hide();
+		  	$('#intertitle2').toggle();
+		   });
+		});
 	
 	<script>
 	$(document).ready(function() {
@@ -101,7 +118,6 @@
 	
     </script>
 	
-	</script>
 	
 	
 </body>
