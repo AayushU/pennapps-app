@@ -61,7 +61,13 @@ h3.inter {
 
 ul {
 	list-style-type: none;
-	padding: 15px;
+	padding: 20px;
+}
+
+a:link {
+	text-decoration: none;
+	color: #d1473e;
+	font-style: bold;
 }
 
 .bg-box {
@@ -164,6 +170,7 @@ input:hover {
 	float: left;
 	width: 250px;
 	height: 400px;
+	overflow: auto;
 	margin: 15px;
 	margin-top: 0px;
 	margin-bottom: 0px;
