@@ -49,6 +49,9 @@ movies = dict()
 own_likes = ""
 friend_tuples = {}
 my_loc = "" 
+message = ""
+time = ""
+email = ""
 
 class Application(tornado.web.Application):
 
@@ -63,7 +66,9 @@ class Application(tornado.web.Application):
             (r"/autocomplete", AutocompleteHandler),
             (r"/DateHandler", DateHandler),
             (r"/emailhandler", EmailHandler),
-						(r"/sendSMS", SendSMSHandler)
+            (r"/msghandler", MsgHandler),
+            (r"/timehandler", TimeHandler),
+		    (r"/sendSMS", SendSMSHandler)
             ]
 
         settings = dict(
@@ -75,6 +80,19 @@ class Application(tornado.web.Application):
 
 class BaseHandler(tornado.web.RequestHandler):
     pass
+
+class MsgHandler(BaseHandler):
+    def post(self):
+        global message
+        message = self.get_argument('active', "")
+        self.render('time.html')
+
+class TimeHandler(BaseHandler):
+    def post(self):
+        global time
+        global email
+        self.redirect('/emailhandler')
+
 
 class SendSMSHandler(BaseHandler):
 	def get(self):
