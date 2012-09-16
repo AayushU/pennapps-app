@@ -22,7 +22,7 @@ import tornado.web
 # Eventful
 import eventful
 
-eventful_api = eventful.API('5zPbkgmCjXhLpHT9')
+#eventful_api = eventful.API('5zPbkgmCjXhLpHT9')
 
 # Mongo
 import pymongo
@@ -313,18 +313,18 @@ class MainHandler(BaseHandler):
         #gather own locale
         city = own_locale[0]['current_location']['city']
         city = city.replace(' ',',')
-        client = tornado.httpclient.AsyncHTTPClient()
+    #    client = tornado.httpclient.AsyncHTTPClient()
         
-        client.fetch("http://api.eventful.com/rest/events/search?" + \
-                    urllib.urlencode({"app_key": "5zPbkgmCjXhLpHT9", "keywords":"movies", "location":city}),
-                    callback=self.on_movie_response)
+   #     client.fetch("http://api.eventful.com/rest/events/search?" + \
+   #                 urllib.urlencode({"app_key": "5zPbkgmCjXhLpHT9", "keywords":"movies", "location":city}),
+    #                callback=self.on_movie_response)
 
         self.render("main.html");
 
     def on_movie_response(self, response):
         print "caught response"
         global movies
-        movies = xmltodict.parse(response.body)
+   #     movies = xmltodict.parse(response.body)
 
 
 def main(port='3000', address='127.0.0.1'):
