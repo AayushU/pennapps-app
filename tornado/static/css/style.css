@@ -54,6 +54,11 @@ h3 {
     /* text-shadow: -1px -1px 1px #ffe9c6, 1px 1px 1px #a69881; */
 }
 
+h3.inter {
+	font-family: MuseoSlab;
+	font-style: italic;
+}
+
 ul {
 	list-style-type: none;
 }
@@ -109,6 +114,10 @@ ul {
 
 #search-form {
 	display: inline;
+}
+
+#intertitle {
+	display: none;
 }
 
 input[type='text'] {

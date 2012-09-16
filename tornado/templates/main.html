@@ -10,16 +10,28 @@
 
 <body>
 	
-	<div class = "search-wrapper">
+	<div class = "search-wrapper" id="search-wrap">
 	
 		<h1 class = "inline">{{ name }} <font color="d1473e">&#x2764; </font></h1>
 	
 		<form method="post" id="search-form" action="/DateHandler">
 			<input type = "text" id="friend_search" name="friend_name">
-			<input type="submit" class="submit-button" value="Take 'Em Out" text-align="center">
+			<input type="submit" class="submit-button" id="friend-submit" value="Take 'Em Out" text-align="center">
  		</form>
+	</div>
 	
+	<div id="intertitle" style="display: none">
+		<h3 style="font-family: MuseoSlab; margin-top: 275px; font-size: 36px">BRB, asking Cupid...</h3>
+	</div>
         <script>
+
+		$(document).ready(function() {
+		   $('#friend-submit').click(function(){
+		     $('#search-wrap').hide();
+		  	$('#intertitle').toggle();
+		   });
+		});
+
 		<!-- http://www.davidjrush.com/blog/2011/10/jquery-creating-a-textbox-text-watermark/ -->
 		$(document).ready(function() {
 		 var watermark = 'TYPE YOUR DATE\'S NAME';
@@ -41,7 +53,6 @@
 	
 	
 	
-	</div>
 	
 </body>
 
