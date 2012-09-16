@@ -93,6 +93,7 @@ ul {
 	border: none; /* doesn't actually look too bad w border */
 	margin-left: 195px; /*margin: auto doesn't work for some reason */
 	margin-right: 195px;
+	margin-top: 50px;
 }
 
 .submit-button:hover {
@@ -102,7 +103,7 @@ ul {
 .text-wrapper {
 	width: 260px;
 	margin: auto;
-	margin-bottom: 50px;
+	/*margin-bottom: 50px;*/
 	text-justify: auto;
 }
 

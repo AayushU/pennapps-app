@@ -274,7 +274,7 @@ class DateHandler(BaseHandler):
 #self.write(len(top_venues))
     #self.write(json.dumps(page))
 
-        self.render("final.html");
+        self.render("options.html");
 
 
 class EmailHandler(BaseHandler):
@@ -302,6 +302,7 @@ class MainHandler(BaseHandler):
         global friend_tuples
         global my_loc
         user = fbconsole.get('/me')
+	name = user['first_name']
         uid = user['id']
         client = tornado.httpclient.HTTPClient()
         friend_tuples = fbconsole.fql("SELECT name,uid FROM user WHERE uid IN "
@@ -319,7 +320,7 @@ class MainHandler(BaseHandler):
    #                 urllib.urlencode({"app_key": "5zPbkgmCjXhLpHT9", "keywords":"movies", "location":city}),
     #                callback=self.on_movie_response)
 
-        self.render("main.html");
+        self.render("main.html", name = name);
 
     def on_movie_response(self, response):
         print "caught response"
