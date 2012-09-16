@@ -274,7 +274,7 @@ class DateHandler(BaseHandler):
 #self.write(len(top_venues))
     #self.write(json.dumps(page))
 
-        self.render("options.html");
+        self.render("final.html");
 
 
 class EmailHandler(BaseHandler):
