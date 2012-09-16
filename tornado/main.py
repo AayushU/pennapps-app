@@ -134,6 +134,10 @@ class DateHandler(BaseHandler):
         global friend_tuples
         global my_loc
 
+		#attempt at splash screen
+		#self.render("intertitle.html");
+		
+
         my_date = self.get_argument('friend_name')
 
         target_uid = -1;
@@ -237,14 +241,17 @@ class DateHandler(BaseHandler):
         #	self.write("<p>" + loc[1] + "</p>")
 		        #-------Exploring 4Sq
         
-        self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
+
+
+        #self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
         largest = heapq.nlargest(1, venues)
         for loc in largest:
-            self.write("<p>" + loc[1] + "</p>")
+            #self.write("<p>" + loc[1] + "</p>")
+			rec1 = rec2 = loc[1]
        
         venues = []
         self.write("<p> Here are the top locations for my date, which is %s</p>" % friend_top_category)
@@ -255,16 +262,18 @@ class DateHandler(BaseHandler):
         largest = heapq.nlargest(1, venues)
         for loc in largest:
             self.write("<p>" + loc[1] + "</p>")
+			#rec2 = loc[1]
 				
         venues = []
-        self.write("<p> Here are the top restaurants in my area</p>")
+        #self.write("<p> Here are the top restaurants in my area</p>")
         data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]["name"]))
         largest = heapq.nlargest(1, venues)
         for loc in largest:
-            self.write("<p>" + loc[1] + "</p>")
+            #self.write("<p>" + loc[1] + "</p>")
+			rec3 = loc[1]
 				
         #for item in venues:
 				
@@ -274,7 +283,7 @@ class DateHandler(BaseHandler):
 #self.write(len(top_venues))
     #self.write(json.dumps(page))
 
-        self.render("final.html");
+        self.render("options.html", rec1 = rec1, rec2 = rec2, rec3 = rec3);
 
 
 class EmailHandler(BaseHandler):

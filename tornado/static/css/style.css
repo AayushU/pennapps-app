@@ -154,12 +154,14 @@ input:hover {
 	float: left;
 	width: 250px;
 	height: 400px;
-	margin: 25px;
+	margin: 15px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-top: 10px;
 	background-color: #EBE2D5;
 	opacity: .5;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .option:hover {
