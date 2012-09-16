@@ -52,6 +52,9 @@ my_loc = ""
 message = ""
 time = ""
 email = ""
+first_stats = {}
+second_stats = {}
+third_stats = {}
 
 class Application(tornado.web.Application):
 
@@ -83,16 +86,24 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MsgHandler(BaseHandler):
     def post(self):
-        global message
-        message = self.get_argument('active_val', "")
-        print message
         self.render('time.html')
 
 class TimeHandler(BaseHandler):
     def post(self):
         global time
         global email
-        self.redirect('/emailhandler')
+
+        #day = self.get_argument('day')
+        #time = self.get_argument('time')
+        day = "September 18th, 2011"
+        time = "05:30"
+         
+        s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
+        message = sendgrid.Message("aayushu@gmail.com", "Hey, do you want to go " 
+        "to dinner with me on %s at %s?" % (day,time), "")
+        message.add_to("kartikrishabh@gmail.com", "keila.fong@gmail.com") 
+        s.web.send(message)
+        self.write("Done sending message!")
 
 
 class SendSMSHandler(BaseHandler):
@@ -162,6 +173,9 @@ class DateHandler(BaseHandler):
         global own_likes
         global friend_tuples
         global my_loc
+        global first_stats
+        global second_stats
+        global third_stats
 
 		#attempt at splash screen
 		#self.render("intertitle.html");
@@ -178,18 +192,8 @@ class DateHandler(BaseHandler):
 
         #gather the date's likes, represented by object_id
 
-        """my_movies = fbconsole.get('/me/movies')
-        my_music = fbconsole.get('/me/music')
-        my_tv = fbconsole.get('/me/television')
-        my_activities = fbconsole.get('/me/activities')
-        """
         my_likes = fbconsole.get('/me/likes')
 
-        """friend_movies = fbconsole.get('/%s/movies' % target_uid)
-        friend_music = fbconsole.get('/%s/music' % target_uid)
-        friend_tv = fbconsole.get('/%s/television' % target_uid)
-        friend_activities = fbconsole.get('/%s/activities' % target_uid)
-        """
         friend_likes = fbconsole.get('/%s/likes' % target_uid)
 
         my_like_count = {}
@@ -252,16 +256,6 @@ class DateHandler(BaseHandler):
 
         venues = []
         client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
-				#-------Searching 4Sq
-        #data = client.venues.search(params={'query': fsQuery, 'near':'New Haven, CT', 'radius':'10', 'intent':'browse'})
-        #for aplace in data["venues"]:
-				#  heapq.heappush(venues, (aplace["stats"]["checkinsCount"], aplace["name"]))
-        #largest = heapq.nlargest(10, venues)
-        #for loc in largest:
-        #	self.write("<p>" + loc[1] + "</p>")
-		        #-------Exploring 4Sq
-        
-
 
         #self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
