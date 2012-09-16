@@ -293,7 +293,8 @@ class EmailHandler(BaseHandler):
 
 class HomeHandler(BaseHandler):
     def get(self):
-        self.render("home.html");
+        self.render("index.html")
+		#self.render("home.html");
 
 
 class MainHandler(BaseHandler):

@@ -1,0 +1,195 @@
+@font-face {
+	font-family: LeagueGothicRegular;
+	src: url('../fonts/leaguegothic-regular-webfont.ttf');
+}
+
+@font-face {	
+	font-family: MuseoSlab;
+	src: url('../fonts/MuseoSlab-300.ttf');
+}
+
+body {
+	background: #d9c6a8;
+	color: #a69881;
+	font-family: 'MuseoSlab', serif;	
+}
+
+h1 {
+	font-weight: normal;
+	font-family: 'LeagueGothicRegular', sans-serif;
+	font-size: 80px;
+	/* text-shadow: 0px 1px 1px #ffe9c6; */
+	color: #a69881;
+	text-align: center;
+	margin-top: -10px;
+	margin-bottom: -10px;
+	text-transform: uppercase;
+}
+
+h1.inline {
+	display: inline;
+}
+
+h1.accent {
+	color: #d1473e;
+	display: inline;
+}
+
+h2 {
+	font-family: MuseoSlab;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	/*color: #d1473e;*/
+	text-align: center;
+}
+
+h3 {
+	font-family: LeagueGothicRegular;
+	font-weight: normal;
+	color: #d1473e;
+	text-align: center;
+	font-size: 80px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+    /* text-shadow: -1px -1px 1px #ffe9c6, 1px 1px 1px #a69881; */
+}
+
+ul {
+	list-style-type: none;
+}
+
+.bg-box {
+	/*background: #a69881;*/
+	width: 650px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+}
+
+/* non-form button */
+.button {
+	margin: auto;
+	width: 260px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: #66BDAF;
+	border-radius: 10px;
+	color: #EBE2D5;
+	text-align: center;
+} 
+
+/* form button -- unfinished */
+.submit-button {
+	width: 260px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: #66BDAF;
+	border-radius: 10px;
+	color: #EBE2D5;
+	text-align: center;
+	font-family: 'MuseoSlab', serif;
+	text-transform: none;
+	font-size: 16px;
+	border: none; /* doesn't actually look too bad w border */
+	margin-left: 195px; /*margin: auto doesn't work for some reason */
+	margin-right: 195px;
+}
+
+.submit-button:hover {
+	color: #f7f6f4;
+}
+
+.text-wrapper {
+	width: 260px;
+	margin: auto;
+	margin-bottom: 50px;
+	text-justify: auto;
+}
+
+#search-form {
+	display: inline;
+}
+
+input[type='text'] {
+	border: none;
+	border-bottom: 5px solid #a69881;
+	background-color: #d9c6a8;
+	color: #a69881;
+	font-family: 'LeagueGothicRegular', sans-serif;
+	font-size: 80px;
+	margin-top: -10px;
+	margin-bottom: -10px;
+	padding-bottom: -10px;
+	text-transform: uppercase;
+}
+
+/*
+input:hover {
+	color: #EBE2D5;
+	border-color: #EBE2D5;
+}*/
+
+.search-wrapper {
+	margin: auto;
+	margin-top: 200px;
+	margin-bottom: 100px;
+	text-align: center;
+}
+
+#option-header {
+	margin-top: 25px;
+}
+
+#option-wrapper {
+	/*background-color: #fff;*/
+	margin: auto;
+	margin-top: 25px;
+	margin-bottom: 50px;
+	width: 900px;
+
+}
+
+.option {
+	float: left;
+	width: 250px;
+	height: 400px;
+	margin: 25px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 10px;
+	background-color: #EBE2D5;
+	opacity: .5;
+}
+
+.option:hover {
+	opacity: .9;
+}
+
+
+/*http://www.webmaster-source.com/2012/04/24/pure-css-blockquote-styling/*/
+blockquote {
+	font-family: MuseoSlab;
+	font-style: italic;
+	margin: 10px;
+	margin-top: 15px;
+	padding: 0.25em 40px;
+	line-height: 1.45;
+	position: relative;
+}
+
+blockquote:before {
+	font-family: LeagueGothicRegular;
+	font-style: normal;
+	display: block;
+	content: "\201C";
+	font-size: 80px;
+	position: absolute;
+	margin-left: 10px;
+	left: 0px;
+	top: -25px;
+	color: #d1473e;
+}
+
+input.time {
+	width: 80px;
+}
