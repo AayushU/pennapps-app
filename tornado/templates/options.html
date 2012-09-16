@@ -1,17 +1,38 @@
 <html>
 <head>
 	<title>PennApps</title>
-	<link href="../static/css/style.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 </head>
 
 <body>
-	
+    <script>
+    var highlightLink = function () {
+            var active = null, colour = '#84DFC1';
+            if (this.attachEvent) this.attachEvent('onunload', function () {
+                active = null;
+            });
+            return function (element) {
+                if ((active != element) && element.style) {
+                    if (active) active.style.opacity = 0.5;
+                    element.style.opacity = 0.9;
+                    active = element;
+                }
+            };
+        }();
+
+        };
+        
+      </script>
+
 	<div id="option-header">		
 	<h1>Choose your adventure</h1>
 	</div>
 	
 	<div id = "option-wrapper">
-		<div class = "option" id="option1">
+		<div class = "option" id="option1" onclick="highlightLink(this);">
 			<h2>{{ name1 }}</h2>
             <blockquote>{{ tip1 }}</blockquote>
 			<ul>
@@ -21,7 +42,7 @@
 			</ul>
 		</div>
 		
-		<div class = "option" id="option2">
+		<div class = "option" id="option2" onclick="highlightLink(this);">
 			<h2>{{ name2 }}</h2>
             <blockquote>{{ tip2 }}</blockquote>
 			<ul>
@@ -31,7 +52,7 @@
 			</ul>
 		</div>
 		
-		<div class = "option" id="option3">
+		<div class = "option" id="option3" onclick="highlightLink(this);">
 			<h2>{{ name3 }}</h2>
             <blockquote>{{ tip3 }}</blockquote>
 			<ul>
@@ -43,11 +64,8 @@
 		
 		<br style = "clear: left;" />
 	</div>
-	
-	<div class = "button">Pencil 'Em In</div>
-	
+	<div class = "button" >Pencil 'Em In</div>
 	
 </body>
-
 </html>
 
