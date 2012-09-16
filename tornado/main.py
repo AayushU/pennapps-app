@@ -95,11 +95,11 @@ class TimeHandler(BaseHandler):
 
         #day = self.get_argument('day')
         #time = self.get_argument('time')
-        day = "September 18th, 2011"
+        day = "September 18th, 2012"
         time = "05:30"
          
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
-        message = sendgrid.Message("kartik.rishabh@gmail.com", "Dinner?", "Hey, do you want to go " 
+        message = sendgrid.Message("kartikrishabh@gmail.com", "Dinner?", "Hey, do you want to go " 
         "to dinner with me on %s at %s?" % (day,time), "")
         message.add_to("keila.fong@gmail.com", "") 
         s.web.send(message)
