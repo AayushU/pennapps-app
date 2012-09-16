@@ -1,18 +1,31 @@
 <!DOCTYPE html> <html>
     <head>
-        <title>It's a Date</title></head>
+        <title>It's a Date</title>
+        <style tye="text/css">
+			h1 {
+				font-family: brush script mt;
+				font-size: 60pt;
+				text-align: center;
+				color: white;
+			}
+			body {
+				background-color: #D6C2AD;
+			};
+		</style>
+        
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> 
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+    </head>
 
     <body>
-        <h1>PickAFriend</h1>
-		    <form method="post" action="/doSearchHandler">
-				<input type = "text" id="searchTerms">
+        <h1>Pick A Friend</h1>
+		    <!--<form method="post" action="/doSearchHandler">
+				<input type = "text" id="searchTerms">-->
 			</form>
             <form method="post" action="/DateHandler">
                 <input id="friend_search" type="text" name="friend_name">
-                <input type="submit" value="Let's go!">
+                <input type="submit" value="Let's go!" text-align="center">
     		</form> 
             <script>
                 $(document).ready(function() {
