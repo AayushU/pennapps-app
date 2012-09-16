@@ -15,7 +15,7 @@
 	
 		<h1 class = "inline">Let's meet at </h1>
 	
-		<form method="post" action="/emailhandler" id="search-form">
+		<form method="post" action="/timehandler" id="search-form">
 			<input type = "text" id="hour" class="time" value="HH"><h1 class="accent">:</h1>
 			<input type = "text" id="min" class="time" value="mm"><h1 class="inline"> on </h1>
 			
@@ -49,7 +49,6 @@
 		   });
 		});
 	
-	<script>
 	$(document).ready(function() {
 	 var watermark = 'HH';
 	 $('#hour').blur(function(){

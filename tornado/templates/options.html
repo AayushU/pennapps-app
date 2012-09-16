@@ -32,7 +32,6 @@ var highlightLink = function () {
 			<ul>
                 <li>Address: {{ addr1 }} </li>
                 <li>Phone: {{ phone1 }}</li>
-                <li>Website: {{ web1 }}</li>
 			</ul>
 		</div>
 		
@@ -42,7 +41,6 @@ var highlightLink = function () {
 			<ul>
                 <li>Address: {{ addr2 }} </li>
                 <li>Phone: {{ phone2 }}</li>
-                <li>Website: {{ web2 }}</li>
 			</ul>
 		</div>
 		
@@ -52,18 +50,23 @@ var highlightLink = function () {
 			<ul>
                 <li>Address: {{ addr3 }} </li>
                 <li>Phone: {{ phone3 }}</li>
-                <li>Website: {{ web3 }}</li>
 			</ul>
 		</div>
 		
 		<br style = "clear: left;" />
+		
+		
+		
 	</div>
-
-	<!-- <div class = "button">Pencil 'Em In</div> -->
-	<form method="post" action="/msghandler">
-        <input type="hidden" value=active name="active_val">
+	
+	<div style="margin: auto">
+	<form method="post" action="/msghandler" style="margins: auto">
+		<input type="hidden" value="3" name="active_val">
         <input type="submit" class="submit-button" value="Pencil 'Em In">
     </form>
+	</div>
+	<!-- <div class = "button">Pencil 'Em In</div> -->
+	
 	
 </body>
 

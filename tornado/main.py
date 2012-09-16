@@ -99,11 +99,11 @@ class TimeHandler(BaseHandler):
         time = "05:30"
          
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
-        message = sendgrid.Message("aayushu@gmail.com", "Hey, do you want to go " 
+        message = sendgrid.Message("kartik.rishabh@gmail.com", "Dinner?", "Hey, do you want to go " 
         "to dinner with me on %s at %s?" % (day,time), "")
-        message.add_to("kartikrishabh@gmail.com", "keila.fong@gmail.com") 
+        message.add_to("keila.fong@gmail.com", "") 
         s.web.send(message)
-        self.write("Done sending message!")
+        self.render('lastpage.html')
 
 
 class SendSMSHandler(BaseHandler):
