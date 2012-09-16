@@ -131,19 +131,26 @@ class DateHandler(BaseHandler):
             if item['name'] == my_date:
                 target_uid = item['uid']
                 break
+        print ("User id is %s" % target_uid)
 
         #gather own likes
         own_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = me()")
         #gather the date's likes, represented by object_id
-        date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
-                                    "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
+        #date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
+        #                            "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
+        date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
+
+        #more_my_likes = fbconsole.fql("SELECT url FROM url_like WHERE user_id = %s" % target_uid)
+        for item in date_likes:
+            print json.dumps(item)
+				
        
         #gather own locale
         own_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = me()")
         #gather date's locale
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
 
-        movies = eventful_api.call('/events/search', q='movies', l=own_locale)
+        movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
         for movie in movies['events']['event']:
             print "%s at %s" % (movie['title'], movie['venue_name'])
 
