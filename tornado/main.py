@@ -84,7 +84,8 @@ class BaseHandler(tornado.web.RequestHandler):
 class MsgHandler(BaseHandler):
     def post(self):
         global message
-        message = self.get_argument('active', "")
+        message = self.get_argument('active_val', "")
+        print message
         self.render('time.html')
 
 class TimeHandler(BaseHandler):
@@ -245,8 +246,6 @@ class DateHandler(BaseHandler):
                 friend_top_category = item
                 break
             
-        print my_like_count
-        print friend_like_count
 
         #print "My top category is %s" % my_top_category
         #print "My date's top category is %s" % friend_top_category
@@ -270,7 +269,6 @@ class DateHandler(BaseHandler):
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(1, venues)
-        print largest
         for loc in largest:
             first_place = loc[1]
        
@@ -280,7 +278,6 @@ class DateHandler(BaseHandler):
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(10, venues)
-        print largest
         for loc in largest:
             if loc[1]['name'] != first_place['name']:
                 second_place = loc[1]
@@ -293,7 +290,6 @@ class DateHandler(BaseHandler):
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(10, venues)
-        print largest
         for loc in largest:
             if loc[1]['name'] != first_place['name'] and loc[1]['name'] != second_place['name']:
                 third_place = loc[1]
