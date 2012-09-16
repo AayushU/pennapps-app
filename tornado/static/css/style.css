@@ -54,8 +54,20 @@ h3 {
     /* text-shadow: -1px -1px 1px #ffe9c6, 1px 1px 1px #a69881; */
 }
 
+h3.inter {
+	font-family: MuseoSlab;
+	font-style: italic;
+}
+
 ul {
 	list-style-type: none;
+	padding: 20px;
+}
+
+a:link {
+	text-decoration: none;
+	color: #d1473e;
+	font-style: bold;
 }
 
 .bg-box {
@@ -111,6 +123,10 @@ ul {
 	display: inline;
 }
 
+#intertitle {
+	display: none;
+}
+
 input[type='text'] {
 	border: none;
 	border-bottom: 5px solid #a69881;
@@ -153,11 +169,13 @@ input:hover {
 .option {
 	float: left;
 	width: 250px;
-	height: 400px;
+	/*height: 400px;
+	overflow: auto;*/
 	margin: 15px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-top: 10px;
+	padding-bottom: 10px;
 	background-color: #EBE2D5;
 	opacity: .5;
 	padding-left: 10px;
