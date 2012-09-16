@@ -245,29 +245,31 @@ class DateHandler(BaseHandler):
         print largest
         for loc in largest:
             first_place = loc[1]
-            r1 = loc[1]['name']
        
         venues = []
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
-        largest = heapq.nlargest(1, venues)
+        largest = heapq.nlargest(10, venues)
         print largest
         for loc in largest:
-            second_place = loc[1]
-            r2 = loc[1]['name']
+            if loc[1]['name'] != first_place['name']:
+                second_place = loc[1]
+                break
+
 				
         venues = []
         data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
-        largest = heapq.nlargest(1, venues)
+        largest = heapq.nlargest(10, venues)
         print largest
         for loc in largest:
-            third_place = loc[1]
-            r3 = loc[1]['name']
+            if loc[1]['name'] != first_place['name'] and loc[1]['name'] != second_place['name']:
+                third_place = loc[1]
+                break
 
 
         first_stats = {} 
