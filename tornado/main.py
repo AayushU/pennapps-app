@@ -8,7 +8,6 @@ import re
 import textwrap
 import heapq
 import xmltodict
-from collections import OrderedDict
 
 # Tornado
 import tornado.httpserver
@@ -109,7 +108,7 @@ class FBHandler(BaseHandler):
     def post(self):
 
         fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
-                                'user_location', 'friends_location']
+                                'user_location', 'friends_location', 'user_activities', 'friends_activities']
         fbconsole.authenticate()
         self.redirect("/main");
 
@@ -147,7 +146,19 @@ class DateHandler(BaseHandler):
         #date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid IN "
         #                            "(SELECT uid2 FROM friend WHERE uid1 = me() AND uid2 = %s)" % target_uid)
 
-        query_dict = {}
+        my_movies = fbconsole.get('/me/movies')
+        my_music = fbconsole.get('/me/music')
+        my_tv = fbconsole.get('/me/television')
+        my_activities = fbconsole.get('/me/activities')
+
+        friend_movies = fbconsole.get('/%s/movies' % target_uid)
+        friend_music = fbconsole.get('/%s/music' % target_uid)
+        friend_tv = fbconsole.get('/%s/television' % target_uid)
+        friend_activities = fbconsole.get('/%s/activities' % target_uid)
+
+        print my_activities
+        print friend_activities
+
         date_likes = fbconsole.fql("SELECT page_id FROM page_fan WHERE uid = %s" % target_uid)
         date_locale = fbconsole.fql("SELECT current_location FROM user WHERE uid = %s" % target_uid)
 
