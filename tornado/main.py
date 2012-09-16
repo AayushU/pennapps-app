@@ -115,14 +115,13 @@ class FBHandler(BaseHandler):
 
 class AutocompleteHandler(BaseHandler):
     def get(self):
+        global friend_tuples
         term = self.get_argument('term', "")
         print 'term is %s' % term
 
-        friend_tuples = fbconsole.fql("SELECT name FROM user WHERE uid IN "
-                                        "(SELECT uid2 FROM friend WHERE uid1 = me())")
         result = []
         for item in friend_tuples:
-            if term in item['name']:
+            if term.lower() in item['name'].lower():
                 result.append(item['name'])
 
         self.write(json.dumps(result))
