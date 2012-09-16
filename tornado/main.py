@@ -153,6 +153,7 @@ class DateHandler(BaseHandler):
         movies = eventful_api.call('/events/search', q='comedy', l=own_locale)
         for movie in movies['events']['event']:
             print "%s at %s" % (movie['title'], movie['venue_name'])
+        
 
         print own_locale
         print date_locale
