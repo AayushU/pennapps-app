@@ -6,12 +6,27 @@
 
 <body>
 	
+    <script>
+var highlightLink = function () {
+        var active = null, colour = '#84DFC1';
+        if (this.attachEvent) this.attachEvent('onunload', function () {
+            active = null;
+        });
+        return function (element) {
+            if ((active != element) && element.style) {
+                if (active) active.style.opacity = 0.5;
+                element.style.opacity = 0.9;
+                active = element;
+            }
+        };
+    }();
+    </script>        
 	<div id="option-header">		
 	<h1>Choose your adventure</h1>
 	</div>
 	
 	<div id = "option-wrapper">
-		<div class = "option" id="option1">
+		<div class = "option" id="option1" onclick="highlightLink(this);">
 			<h2>{{ name1 }}</h2>
             <blockquote>{{ tip1 }}</blockquote>
 			<ul>
@@ -21,7 +36,7 @@
 			</ul>
 		</div>
 		
-		<div class = "option" id="option2">
+		<div class = "option" id="option2" onclick="highlightLink(this);">
 			<h2>{{ name2 }}</h2>
             <blockquote>{{ tip2 }}</blockquote>
 			<ul>
@@ -31,7 +46,7 @@
 			</ul>
 		</div>
 		
-		<div class = "option" id="option3">
+		<div class = "option" id="option3" onclick="highlightLink(this);">
 			<h2>{{ name3 }}</h2>
             <blockquote>{{ tip3 }}</blockquote>
 			<ul>
