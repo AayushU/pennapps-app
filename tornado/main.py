@@ -251,7 +251,7 @@ class DateHandler(BaseHandler):
                     item = "television"
                 elif item == "Professional sports team":
                     item = "Sport"
-                elif item == "Restaurant/cafe":
+                elif item == 'Local business' or item == "Restaurant/cafe":
                     item = "Restaurant"
                 elif item == "Food/beverages":
                     item = "food"
