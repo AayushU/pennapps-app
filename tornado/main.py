@@ -256,15 +256,16 @@ class DateHandler(BaseHandler):
 
         venues = []
         client = foursquare.Foursquare(client_id=FSQOauthToken, client_secret=FSQOauthSecret)
+        first_place = []
 
         #self.write("<p> Here are the top locations for my preference, which is %s</p>" % my_top_category)
         data = client.venues.explore(params={'near' : my_loc, 'query': my_top_category})
         for it in data["groups"]:
             for item in it["items"]:
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
-        largest = heapq.nlargest(1, venues)
+        largest = heapq.nlargest(10, venues)
         for loc in largest:
-            first_place = loc[1]
+            first_place.append(loc[1])
        
         venues = []
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
@@ -273,7 +274,9 @@ class DateHandler(BaseHandler):
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(10, venues)
         for loc in largest:
-            if loc[1]['name'] != first_place['name']:
+            print loc[1]['name']
+            if loc[1]['name'] != first_place[0]['name']:
+                print 'second_place is %s', loc[1]['name']
                 second_place = loc[1]
                 break
 
@@ -285,21 +288,22 @@ class DateHandler(BaseHandler):
                 heapq.heappush(venues, (item["venue"]["stats"]["checkinsCount"], item["venue"]))
         largest = heapq.nlargest(10, venues)
         for loc in largest:
-            if loc[1]['name'] != first_place['name'] and loc[1]['name'] != second_place['name']:
+            if loc[1]['name'] != first_place[0]['name'] and second_place and loc[1]['name'] != second_place['name']:
                 third_place = loc[1]
                 break
 
 
         first_stats = {} 
-        first_stats['name'] = first_place['name']
-        first_stats['address'] = first_place['location']['address']
-        first_stats['phone'] = first_place['contact']['formattedPhone']
-        if 'url' in first_place:
-            first_stats['website'] = first_place['url'] 
+        first_stats['name'] = first_place[0]['name']
+        first_stats['address'] = first_place[0]['location']['address']
+        first_stats['phone'] = first_place[0]['contact']['formattedPhone']
+        if 'url' in first_place[0]:
+            first_stats['website'] = first_place[0]['url'] 
         else:
             first_stats['website'] = 'N/A'
-        first_stats['lat'] = first_place['location']['lat']
-        first_stats['lng'] = first_place['location']['lng']
+        first_stats['lat'] = first_place[0]['location']['lat']
+        first_stats['lng'] = first_place[0]['location']['lng']
+
 
         second_stats = {} 
         second_stats['name'] = second_place['name']
@@ -322,7 +326,6 @@ class DateHandler(BaseHandler):
             third_stats['website'] = 'N/A'
         third_stats['lat'] = third_place['location']['lat']
         third_stats['lng'] = third_place['location']['lng']
-            #self.write("<p>" + loc[1] + "</p>")
 
 
         first_text = client.venues(first_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
