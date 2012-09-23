@@ -56,6 +56,9 @@ first_stats = {}
 second_stats = {}
 third_stats = {}
 
+_months = {1 : "January", 2 : "February", 3 : "March", 4 : "April", 5 : "May", 6 : "June" ,
+           7 : "July", 8 : "August", 9 : "September", 10 : "October", 11 : "November", 12 : "December"}
+
 class Application(tornado.web.Application):
 
     def __init__(self):
@@ -95,13 +98,20 @@ class TimeHandler(BaseHandler):
 
         #day = self.get_argument('day')
         #time = self.get_argument('time')
-        day = "September 18th, 2012"
-        time = "05:30"
+        dayofmonth = self.get_argument('day')
+        daysuffix = ("st" if dayofmonth[:-1] == "1" else ("nd" if dayofmonth[:-1] == "2" else ("rd" if dayofmonth[:-1] == "3" else "th")))
+        day = ("%s %s%s, 20%s" % (_months[int(self.get_argument('month'))], dayofmonth, daysuffix, self.get_argument('year')))
+        print day
+        #"September 18th, 2012"
+        time = ("%s:%s %s" % (self.get_argument('hour'), self.get_argument('min'), self.get_argument('tod')))
+        print time
+        print self.get_argument('email')
+        #"05:30 PM"
          
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
         message = sendgrid.Message("kartikrishabh@gmail.com", "Dinner?", "Hey, do you want to go " 
         "to dinner with me on %s at %s?" % (day,time), "")
-        message.add_to("keila.fong@gmail.com", "") 
+        message.add_to(self.get_argument('email'), "") 
         s.web.send(message)
         self.render('lastpage.html')
 
@@ -268,6 +278,7 @@ class DateHandler(BaseHandler):
             first_place.append(loc[1])
        
         venues = []
+        second_place = {}
         data = client.venues.explore(params={'near' : my_loc, 'query':  friend_top_category })
         for it in data["groups"]:
             for item in it["items"]:
@@ -276,12 +287,14 @@ class DateHandler(BaseHandler):
         for loc in largest:
             print loc[1]['name']
             if loc[1]['name'] != first_place[0]['name']:
-                print 'second_place is %s', loc[1]['name']
                 second_place = loc[1]
                 break
 
-				
+        if not second_place:
+            second_place = first_place[1]
+
         venues = []
+        third_place = {}
         data = client.venues.explore(params={'near' : my_loc, 'section':'food' }) 
         for it in data["groups"]:
             for item in it["items"]:
@@ -292,11 +305,15 @@ class DateHandler(BaseHandler):
                 third_place = loc[1]
                 break
 
+        if not third_place:
+            third_place = first_place[2]
 
         first_stats = {} 
         first_stats['name'] = first_place[0]['name']
         first_stats['address'] = first_place[0]['location']['address']
-        first_stats['phone'] = first_place[0]['contact']['formattedPhone']
+        first_stats['phone'] = 'N/A'
+        if 'contact' in first_place[0] and 'formattedPhone' in first_place[0]['contact']:
+            first_stats['phone'] = first_place[0]['contact']['formattedPhone']
         if 'url' in first_place[0]:
             first_stats['website'] = first_place[0]['url'] 
         else:
@@ -304,11 +321,12 @@ class DateHandler(BaseHandler):
         first_stats['lat'] = first_place[0]['location']['lat']
         first_stats['lng'] = first_place[0]['location']['lng']
 
-
         second_stats = {} 
         second_stats['name'] = second_place['name']
         second_stats['address'] = second_place['location']['address']
-        second_stats['phone'] = second_place['contact']['formattedPhone']
+        second_stats['phone'] = 'N/A'
+        if 'contact' in second_place and 'formattedPhone' in second_place['contact']:
+        	second_stats['phone'] = second_place['contact']['formattedPhone']
         if 'url' in second_place:
             second_stats['website'] = second_place['url'] 
         else:
@@ -319,7 +337,9 @@ class DateHandler(BaseHandler):
         third_stats = {} 
         third_stats['name'] = third_place['name']
         third_stats['address'] = third_place['location']['address']
-        third_stats['phone'] = third_place['contact']['formattedPhone']
+        third_stats['phone'] = 'N/A'
+        if 'formattedPhone' in third_place and 'phone' in third_place['contact']:
+        	third_stats['phone'] = third_place['contact']['formattedPhone']
         if 'url' in third_place:
             third_stats['website'] = third_place['url'] 
         else:
@@ -328,7 +348,7 @@ class DateHandler(BaseHandler):
         third_stats['lng'] = third_place['location']['lng']
 
 
-        first_text = client.venues(first_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
+        first_text = client.venues(first_place[0]['id'])['venue']['tips']['groups'][0]['items'][0]['text']
         second_text = client.venues(second_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
         third_text = client.venues(third_place['id'])['venue']['tips']['groups'][0]['items'][0]['text']
 
@@ -357,7 +377,7 @@ class EmailHandler(BaseHandler):
         time = self.get_argument('time')
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
         message = sendgrid.Message("aayushu@gmail.com", "Wanna chill soon?", "Hey %s, do you want to go " 
-        "to dinner with me on %s at %s?" % (my_date, day,time), "")
+        "to dinner with me on %s at %s?" % (my_date, day, time), "")
         message.add_to("aayushu@gmail.com", my_date) 
         s.web.send(message)
         self.write("Done sending message!")
