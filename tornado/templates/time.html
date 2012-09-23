@@ -16,17 +16,17 @@
 		<h1 class = "inline">Let's meet at </h1>
 	
 		<form method="post" action="/timehandler" id="search-form">
-			<input type = "text" id="hour" class="time" value="HH"><h1 class="accent">:</h1>
-			<input type = "text" id="min" class="time" value="mm"><h1 class="inline"> on </h1>
+            <input type = "text" name ="hour" id="hour" class="time" value="HH"><h1 class="accent">:</h1>
+            <select name="tod" id="tod"> <option value="AM">AM</option> <option value="PM">PM</option></select>
+            <input type = "text" name="min" id="min" class="time" value="mm"><h1 class="inline"> on </h1>
 			
-			<input type = "text" id="month" class="time" value="MM"><h1 class="accent">/</h1>
-			<input type = "text" id="day" class="time" value="DD"><h1 class="accent">/</h1>
-			<input type = "text" id="year" class="time" value="YY"><h1 class="inline">.</h1>
+            <input type = "text" name = "month" id="month" class="time" value="MM"><h1 class="accent">/</h1>
+            <input type = "text" name="day" id="day" class="time" value="DD"><h1 class="accent">/</h1>
+            <input type = "text" name="year" id="year" class="time" value="YY"><h1 class="inline">.</h1>
 			<br><br><br>
-			<h1 class="inline">Send an invite to </h1>
-			<input type = "text" id="email" value="email@domain.com">
-			
-			<input type="submit" class="submit-button" id="time-submit" value="It's a Date!" text-align="center">
+            <h1 class="inline">Send an invite to </h1>
+            <input type = "text" name="email" id="email" value="email@domain.com">	
+            <input type="submit" class="submit-button" id="time-submit" value="It's a Date!" text-align="center">
 			
 		</form>
 	
