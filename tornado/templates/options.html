@@ -22,7 +22,7 @@ var highlightLink = function () {
     }();
     </script>        
 	<div id="option-header">		
-	<h1>Choose your adventure</h1>
+		<h1>Choose your adventure</h1>
 	</div>
 	
 	<div id = "option-wrapper">
@@ -52,19 +52,18 @@ var highlightLink = function () {
                 <li>Phone: {{ phone3 }}</li>
 			</ul>
 		</div>
+	
 		
-		<br style = "clear: left;" />
-		
+		<form method="post" action="/msghandler" id="options-form">
+			<input type="hidden" value="3" name="active_val">
+	        <input type="submit" class="submit-button" id="options-submit" value="Pencil 'Em In">
+	    </form>
 		
 		
 	</div>
 	
-	<div style="margin: auto">
-	<form method="post" action="/msghandler" style="margins: auto">
-		<input type="hidden" value="3" name="active_val">
-        <input type="submit" class="submit-button" value="Pencil 'Em In">
-    </form>
-	</div>
+	
+
 	<!-- <div class = "button">Pencil 'Em In</div> -->
 	
 	

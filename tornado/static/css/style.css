@@ -112,6 +112,12 @@ a:link {
 	color: #f7f6f4;
 }
 
+
+#options-submit {
+	margin-left: 320px;
+	margin-right: 320px;
+}
+
 .text-wrapper {
 	width: 260px;
 	margin: auto;
@@ -120,6 +126,10 @@ a:link {
 }
 
 #search-form {
+	display: inline;
+}
+
+#options-form {
 	display: inline;
 }
 
@@ -169,7 +179,7 @@ input:hover {
 .option {
 	float: left;
 	width: 250px;
-	height: 420px;
+	height: 380px;
 	/*overflow: auto;*/
 	margin: 15px;
 	margin-top: 0px;
