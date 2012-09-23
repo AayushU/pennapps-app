@@ -260,6 +260,7 @@ class DateHandler(BaseHandler):
                 friend_top_category = item
                 break
             
+        print my_top_category
 
         #print "My top category is %s" % my_top_category
         #print "My date's top category is %s" % friend_top_category
