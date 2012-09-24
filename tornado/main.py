@@ -23,8 +23,6 @@ import tornado.web
 # Eventful
 import eventful
 
-#eventful_api = eventful.API('5zPbkgmCjXhLpHT9')
-
 # Mongo
 import pymongo
 from bson import json_util
@@ -35,8 +33,6 @@ import foursquare
 FSQOauthToken = "QYEIVBMULP11CPVHP4MSHXDB2VIZ12LDDUTMMJL2YSP2IJJA"
 FSQOauthSecret = "L04TIELKXWIHKVXWI1PRENGM1YFSPHHX0PEUZQSUIMDVHDDU"
 
-twaccount = "AC032798eca07124939abd8352c516f86d"
-twtoken = "bbc20641c4fdb7e5a0ccc86b4fdefcfe"
 
 #FB
 import fbconsole
@@ -115,7 +111,7 @@ class TimeHandler(BaseHandler):
         print self.get_argument('email')
         #"05:30 PM"
          
-        s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
+        #s = sendgrid.Sendgrid('', '', secure=True)
         message = sendgrid.Message(_myemail, "Dinner?", "Hey, do you want to meet up " 
         "with me at %s on %s at %s?" % (selectedoption, day,time), "")
         message.add_to(self.get_argument('email'), "") 
@@ -385,8 +381,8 @@ class EmailHandler(BaseHandler):
 
         day = self.get_argument('day')
         time = self.get_argument('time')
-        s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
-        message = sendgrid.Message("aayushu@gmail.com", "Wanna chill soon?", "Hey %s, do you want to go " 
+        #s = sendgrid.Sendgrid('', '', secure=True)
+        message = sendgrid.Message("email", "Wanna chill soon?", "Hey %s, do you want to go " 
         "to dinner with me on %s at %s?" % (my_date, day, time), "")
         message.add_to("aayushu@gmail.com", my_date) 
         s.web.send(message)
