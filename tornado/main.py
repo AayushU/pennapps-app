@@ -60,6 +60,7 @@ _months = {1 : "January", 2 : "February", 3 : "March", 4 : "April", 5 : "May", 6
            7 : "July", 8 : "August", 9 : "September", 10 : "October", 11 : "November", 12 : "December"}
 
 _myemail = ""
+selectedoption = "";
 
 class Application(tornado.web.Application):
 
@@ -91,12 +92,16 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MsgHandler(BaseHandler):
     def post(self):
+        global selectedoption 
+        selectedoption = self.get_argument('active_val')
+        print selectedoption
         self.render('time.html')
 
 class TimeHandler(BaseHandler):
     def post(self):
         global time
         global email
+        global selectedoption
 
         #day = self.get_argument('day')
         #time = self.get_argument('time')
@@ -111,17 +116,16 @@ class TimeHandler(BaseHandler):
         #"05:30 PM"
          
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
-        message = sendgrid.Message(_myemail, "Dinner?", "Hey, do you want to go " 
-        "to dinner with me at Anna Liffeys on %s at %s?" % (day,time), "")
+        message = sendgrid.Message(_myemail, "Dinner?", "Hey, do you want to meet up " 
+        "with me at %s on %s at %s?" % (selectedoption, day,time), "")
         message.add_to(self.get_argument('email'), "") 
         s.web.send(message)
         self.render('lastpage.html')
 
-
 class SendSMSHandler(BaseHandler):
 	def get(self):
 		client = TwilioRestClient(twaccount, twtoken)
-		message = client.sms.messages.create(to="+14082198916",from_="+1954607-3879",body="Twilio works!")
+		message = client.sms.messages.create(to="+",from_="+1954607-3879",body="Twilio works!")
 		self.write("Sent a message")
         
 class DoSearchHandler(BaseHandler):
@@ -193,7 +197,6 @@ class DateHandler(BaseHandler):
 		#attempt at splash screen
 		#self.render("intertitle.html");
 		
-
         my_date = self.get_argument('friend_name')
 
         target_uid = -1;

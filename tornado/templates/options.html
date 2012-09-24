@@ -7,6 +7,7 @@
 <body>
 	
     <script>
+        var optionSelected = '';
 var highlightLink = function () {
         var active = null, colour = '#84DFC1';
         if (this.attachEvent) this.attachEvent('onunload', function () {
@@ -17,6 +18,8 @@ var highlightLink = function () {
                 if (active) active.style.opacity = 0.5;
                 element.style.opacity = 0.9;
                 active = element;
+                optionSelected = active;
+                document.forms['options-form'].children.item('active_val').value = active.children.item('h2').title;
             }
         };
     }();
@@ -27,7 +30,7 @@ var highlightLink = function () {
 	
 	<div id = "option-wrapper">
 		<div class = "option" id="option1" onclick="highlightLink(this);">
-			<h2>{{ name1 }}</h2>
+            <h2 title="{{name1 }}">{{ name1 }}</h2>
             <blockquote>{{ tip1 }}</blockquote>
 			<ul>
                 <li>Address: {{ addr1 }} </li>
@@ -36,7 +39,7 @@ var highlightLink = function () {
 		</div>
 		
 		<div class = "option" id="option2" onclick="highlightLink(this);">
-			<h2 >{{ name2 }}</h2>
+            <h2 title="{{name2 }}">{{ name2 }}</h2>
             <blockquote>{{ tip2 }}</blockquote>
 			<ul>
                 <li>Address: {{ addr2 }} </li>
@@ -45,7 +48,7 @@ var highlightLink = function () {
 		</div>
 		
 		<div class = "option" id="option3" onclick="highlightLink(this);">
-			<h2>{{ name3 }}</h2>
+            <h2 title="{{name3}}">{{ name3 }}</h2>
             <blockquote>{{ tip3 }}</blockquote>
 			<ul>
                 <li>Address: {{ addr3 }} </li>
@@ -58,16 +61,8 @@ var highlightLink = function () {
 			<input type="hidden" value="3" name="active_val">
 	        <input type="submit" class="submit-button" id="options-submit" value="Pencil 'Em In">
 	    </form>
-		
-		
 	</div>
-	
-	
-
 	<!-- <div class = "button">Pencil 'Em In</div> -->
-	
-	
 </body>
-
 </html>
 
