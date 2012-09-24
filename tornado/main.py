@@ -106,7 +106,7 @@ class TimeHandler(BaseHandler):
         #day = self.get_argument('day')
         #time = self.get_argument('time')
         dayofmonth = self.get_argument('day')
-        daysuffix = ("th" if dayofmonth[1] == "1" else ("st" if dayofmonth[-1] == "1" else ("nd" if dayofmonth[-1] == "2" else ("rd" if dayofmonth[-1] == "3" else "th"))))
+        daysuffix = ("th" if dayofmonth[:1] == "1" else ("st" if dayofmonth[-1] == "1" else ("nd" if dayofmonth[-1] == "2" else ("rd" if dayofmonth[-1] == "3" else "th"))))
         day = ("%s %s%s" % (_months[int(self.get_argument('month'))], dayofmonth, daysuffix))
         print day
         #"September 18th, 2012"
