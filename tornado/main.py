@@ -59,6 +59,8 @@ third_stats = {}
 _months = {1 : "January", 2 : "February", 3 : "March", 4 : "April", 5 : "May", 6 : "June" ,
            7 : "July", 8 : "August", 9 : "September", 10 : "October", 11 : "November", 12 : "December"}
 
+_myemail = ""
+
 class Application(tornado.web.Application):
 
     def __init__(self):
@@ -99,7 +101,7 @@ class TimeHandler(BaseHandler):
         #day = self.get_argument('day')
         #time = self.get_argument('time')
         dayofmonth = self.get_argument('day')
-        daysuffix = ("st" if dayofmonth[:-1] == "1" else ("nd" if dayofmonth[:-1] == "2" else ("rd" if dayofmonth[:-1] == "3" else "th")))
+        daysuffix = ("th" if dayofmonth[1] == "1" else ("st" if dayofmonth[-1] == "1" else ("nd" if dayofmonth[-1] == "2" else ("rd" if dayofmonth[-1] == "3" else "th"))))
         day = ("%s %s%s, 20%s" % (_months[int(self.get_argument('month'))], dayofmonth, daysuffix, self.get_argument('year')))
         print day
         #"September 18th, 2012"
@@ -109,8 +111,8 @@ class TimeHandler(BaseHandler):
         #"05:30 PM"
          
         s = sendgrid.Sendgrid('AayushU', 'helloworld', secure=True)
-        message = sendgrid.Message("kartikrishabh@gmail.com", "Dinner?", "Hey, do you want to go " 
-        "to dinner with me on %s at %s?" % (day,time), "")
+        message = sendgrid.Message(_myemail, "Dinner?", "Hey, do you want to go " 
+        "to dinner with me at Anna Liffeys on %s at %s?" % (day,time), "")
         message.add_to(self.get_argument('email'), "") 
         s.web.send(message)
         self.render('lastpage.html')
@@ -158,7 +160,7 @@ class FSMainHandler(BaseHandler):
 class FBHandler(BaseHandler):
     def post(self):
 
-        fbconsole.AUTH_SCOPE = ['user_interests', 'user_likes', 'friends_interests', 'friends_likes',
+        fbconsole.AUTH_SCOPE = ['email','user_interests', 'user_likes', 'friends_interests', 'friends_likes',
                                 'user_location', 'friends_location', 'user_activities', 'friends_activities']
         fbconsole.authenticate()
         self.redirect("/main");
@@ -186,6 +188,7 @@ class DateHandler(BaseHandler):
         global first_stats
         global second_stats
         global third_stats
+        global _myemail
 
 		#attempt at splash screen
 		#self.render("intertitle.html");
@@ -201,6 +204,9 @@ class DateHandler(BaseHandler):
         print ("User id is %s" % target_uid)
 
         #gather the date's likes, represented by object_id
+
+        aboutme = fbconsole.get('/me')
+        _myemail = aboutme['email']
 
         my_likes = fbconsole.get('/me/likes')
 
