@@ -107,10 +107,10 @@ class TimeHandler(BaseHandler):
         #time = self.get_argument('time')
         dayofmonth = self.get_argument('day')
         daysuffix = ("th" if dayofmonth[1] == "1" else ("st" if dayofmonth[-1] == "1" else ("nd" if dayofmonth[-1] == "2" else ("rd" if dayofmonth[-1] == "3" else "th"))))
-        day = ("%s %s%s, 20%s" % (_months[int(self.get_argument('month'))], dayofmonth, daysuffix, self.get_argument('year')))
+        day = ("%s %s%s" % (_months[int(self.get_argument('month'))], dayofmonth, daysuffix))
         print day
         #"September 18th, 2012"
-        time = ("%s:%s %s" % (self.get_argument('hour'), self.get_argument('min'), self.get_argument('tod')))
+        time = ("%s:%s" % (self.get_argument('hour'), self.get_argument('min')))
         print time
         print self.get_argument('email')
         #"05:30 PM"
